@@ -6,6 +6,9 @@ from bot.config_reader import config
 # prerequisites
 if not config.bot_token.get_secret_value():
     exit("No token provided")
+    
+print("token")
+print(config.bot_token.get_secret_value())
 
 # init
 bot = Bot(token=config.bot_token.get_secret_value(), parse_mode="HTML")
