@@ -1,35 +1,10 @@
-from aiogram import Bot, Dispatcher
-import asyncio
-
-from bot.handlers import setup_routers
-from bot.commandsworker import set_bot_commands
-
-from bot.config_reader import config
+from aiogram import executor
+from bot.dispatcher import dp
 from bot.blocklists import init_ban_list
+import bot.handlers # init handlers
 
 
-async def main():
-    init_ban_list()
+init_ban_list()
 
-    bot = Bot(token=config.bot_token.get_secret_value())
-    dp = Dispatcher()
-
-    from bot.utils.ban import parse_banned_list
-
-    print(parse_banned_list())
-
-    router = setup_routers()
-    dp.include_router(router)
-
-    # Регистрация /-команд в интерфейсе
-    await set_bot_commands(bot)
-
-    try:
-        await bot.delete_webhook()
-        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
-    finally:
-        await bot.session.close()
-
-
-asyncio.run(main())
- 
+if __name__ == "__main__":
+    executor.start_polling(dp, skip_updates=False)

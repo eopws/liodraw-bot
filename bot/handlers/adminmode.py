@@ -1,16 +1,11 @@
-from aiogram import Router, F
-from aiogram.exceptions import TelegramAPIError
-from aiogram.filters import Command
 from aiogram.types import Message
-from aiogram.types import ContentType, Message
+from aiogram.types import Message
+
+from bot.dispatcher import dp
 
 from bot.utils.strings import extract_id
 
-router = Router()
-router.message.filter(F.chat.id == 1551500575)
-
-
-@router.message(Command(commands=["help"]))
+@dp.message_handler(is_admin=True, commands="start", commands_prefix="/")
 async def cmd_help(message: Message):
     """
     Справка для админа
@@ -22,13 +17,17 @@ async def cmd_help(message: Message):
     """)
 
 
-@router.message(F.reply_to_message)
+@dp.message_handler(is_admin=True)
 async def reply_to_user(message: Message):
     """
     Ответ администратора на сообщение юзера (отправленное ботом).
     Используется метод copy_message, поэтому ответить можно чем угодно, хоть опросом.
     :param message: сообщение от админа, являющееся ответом на другое сообщение
     """
+
+    if not message.reply_to_message:
+        await message.reply("Ошибка: Нужно ответить на сообщение")
+        return
 
     # Вырезаем ID
     try:
@@ -40,17 +39,5 @@ async def reply_to_user(message: Message):
     # В теории, это можно оформить через errors_handler, но мне так нагляднее
     try:
         await message.copy_to(user_id)
-    except TelegramAPIError as ex:
+    except:
         await message.reply("Не получилось ответить пользователю :(")
-
-
-@router.message(~F.reply_to_message)
-async def has_no_reply(message: Message):
-    """
-    Хэндлер на сообщение от админа, не содержащее ответ (reply).
-    В этом случае надо кинуть ошибку.
-    :param message: сообщение от админа, не являющееся ответом на другое сообщение
-    """
-    if message.content_type not in (ContentType.NEW_CHAT_MEMBERS, ContentType.LEFT_CHAT_MEMBER):
-        await message.reply("Ошибка: Нужно ответить на сообщение")
-

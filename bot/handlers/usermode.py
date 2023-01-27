@@ -1,18 +1,15 @@
-from aiogram import Router, F, Bot
-from aiogram.filters import Command
+from aiogram import Bot
 from aiogram.types import Message
 from bot.blocklists import banned
 
-from bot.filters import SupportedMediaFilter
+from bot.dispatcher import dp, bot
+
 from bot.utils.strings import get_user_info_string
 
 from bot.config_reader import config
 
 
-router = Router()
-
-
-@router.message(Command(commands=["start"]))
+@dp.message_handler(is_admin=False, commands="start", commands_prefix="/")
 async def cmd_start(message: Message):
     """
     Приветственное сообщение от бота пользователю
@@ -20,7 +17,8 @@ async def cmd_start(message: Message):
     """
     await message.answer("Привет")
 
-@router.message(Command(commands=["help"]))
+
+@dp.message_handler(is_admin=False, commands="help", commands_prefix="/")
 async def cmd_help(message: Message):
     """
     Справка для пользователя
@@ -29,13 +27,13 @@ async def cmd_help(message: Message):
     await message.answer("Это бот для общения с администрацией канала, все сообщения которые вы присылаете мне будут пересланы администрации")
 
 
-
-@router.message(F.text)
-async def text_message(message: Message, bot: Bot):
+@dp.message_handler(is_admin=False)
+async def text_message(message: Message):
     """
     Хэндлер на текстовые сообщения от пользователя
     :param message: сообщение от пользователя для админа(-ов)
     """
+    print('message')
     if message.from_user.id in banned:
         await message.answer("Вам запрещено отправлять сообщения!")
     else:
@@ -48,7 +46,8 @@ async def text_message(message: Message, bot: Bot):
             message.html_text + get_user_info_string(message), parse_mode="HTML"
         )
 
-@router.message(SupportedMediaFilter())
+
+@dp.message_handler(is_admin=False)
 async def supported_media(message: Message):
     """
     Хэндлер на медиафайлы от пользователя.

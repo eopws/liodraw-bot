@@ -22,7 +22,7 @@ def extract_id(message: Message) -> int:
         raise ValueError("Не удалось извлечь ID для ответа!")
 
     # ... более того, хэштег должен иметь вид #id123456, где 123456 — ID получателя
-    hashtag = entities[-1].extract(message.text or message.caption)
+    hashtag = entities[-1].get_text(message.text or message.caption) # extract(message.text or message.caption)
     if len(hashtag) < 4 or not hashtag[3:].isdigit():  # либо просто #id, либо #idНЕЦИФРЫ
         raise ValueError("Некорректный ID для ответа!")
 
