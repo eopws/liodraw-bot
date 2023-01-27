@@ -1,4 +1,3 @@
-from aiogram import Bot
 from aiogram.types import Message
 from bot.blocklists import banned
 

@@ -4,7 +4,6 @@ from aiogram.types import Message
 from bot.dispatcher import dp
 
 from bot.blocklists import ban_user, unban_user, banned
-from bot.config_reader import config
 from bot.utils.strings import extract_id, extract_name
 
 
