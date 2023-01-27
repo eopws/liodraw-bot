@@ -13,6 +13,4 @@ class IsAdminFilter(BoundFilter):
         self.is_admin = is_admin
 
     async def check(self, message: types.Message):
-        print(message.chat.id)
-        print(config.admin_chat_id)
         return self.is_admin == (message.chat.id == config.admin_chat_id)

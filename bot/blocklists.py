@@ -4,10 +4,7 @@ banned = set()
 
 
 def init_ban_list():
-    print("start parsing")
     banned_users = parse_banned_list()
-
-    print(banned_users)
 
     for user in banned_users:
         banned.add(int(user))

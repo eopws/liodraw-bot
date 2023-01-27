@@ -33,11 +33,9 @@ async def text_message(message: Message):
     Хэндлер на текстовые сообщения от пользователя
     :param message: сообщение от пользователя для админа(-ов)
     """
-    print('message')
     if message.from_user.id in banned:
         await message.answer("Вам запрещено отправлять сообщения!")
     else:
-        print(f'{message.from_user.id} отправляет сообщение')
         if len(message.text) > 4000:
             return await message.reply("Слишком большое сообщение")
 
