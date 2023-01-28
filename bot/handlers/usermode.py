@@ -15,7 +15,7 @@ async def cmd_start(message: Message):
     Приветственное сообщение от бота пользователю
     :param message: сообщение от пользователя с командой /start
     """
-    await message.answer("Привет")
+    await message.answer("Привет, это бот для общения с администрацией канала, все сообщения которые вы присылаете мне будут пересланы администрации")
 
 
 @dp.message_handler(is_admin=False, commands="help", commands_prefix="/")
@@ -27,7 +27,7 @@ async def cmd_help(message: Message):
     await message.answer("Это бот для общения с администрацией канала, все сообщения которые вы присылаете мне будут пересланы администрации")
 
 
-@dp.message_handler(is_admin=False, is_media_group=False, content_types=['photo'])
+@dp.message_handler(is_admin=False, is_media_group=False, content_types=['photo', 'audio', 'video', 'document', 'voice', 'animation'])
 async def supported_media(message: Message):
     """
     Хэндлер на медиафайлы от пользователя.
@@ -45,7 +45,17 @@ async def supported_media(message: Message):
             parse_mode="HTML"
         )
 
-# @dp.message_handler(is_admin=False, is_media_group=True)#, content_types=['photo'])
+
+@dp.message_handler(is_admin=False, is_media_group=False, content_types=['video_note'])
+async def video_note_handler(message: Message):
+    """
+    Кружки отсылать нельзя
+    :param message: медиафайл от пользователя
+    """
+    # пользователю нельзя отправлять стикеры
+    await message.answer("Вам запрещено отправлять видео заметки!")
+
+
 @dp.message_handler(is_admin=False, is_media_group=True, content_types=ContentType.ANY)
 async def supported_media(message: Message, album: List[Message]):
     """

@@ -17,7 +17,7 @@ async def cmd_help(message: Message):
     """)
 
 
-@dp.message_handler(is_admin=True, is_media_group=False, content_types=['photo'])
+@dp.message_handler(is_admin=True, is_media_group=False, content_types=['photo', 'audio', 'video', 'document', 'voice', 'animation', 'video_note'])
 async def supported_media(message: Message):
     """
     Хэндлер на медиафайлы от пользователя.
@@ -87,7 +87,6 @@ async def supported_media(message: Message, album: List[Message]):
     except:
         await message.reply("Не получилось ответить пользователю :(")
     user_id = extract_id(message.reply_to_message)
-
 
 
 @dp.message_handler(is_admin=True)
