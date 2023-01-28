@@ -115,3 +115,20 @@ async def reply_to_user(message: Message):
     except:
         await message.reply("Не получилось ответить пользователю :(")
 
+
+@dp.message_handler(is_admin=True, content_types=['sticker'])
+async def sticker_message(message: Message):
+    if not message.reply_to_message:
+        await message.reply("Ошибка: Нужно ответить на сообщение")
+        return
+
+    # Вырезаем ID
+    try:
+        user_id = extract_id(message.reply_to_message)
+    except ValueError as ex:
+        return await message.reply(str(ex))
+
+    await bot.send_sticker(
+        chat_id=user_id,
+        sticker=message.sticker.file_id
+    )

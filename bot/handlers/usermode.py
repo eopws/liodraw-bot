@@ -68,7 +68,10 @@ async def supported_media(message: Message, album: List[Message]):
             file_id = obj[obj.content_type].file_id
 
         try:
-            media_group.attach({"media": file_id, "type": obj.content_type, "caption": given_caption})
+            if obj.content_type != "document":
+                media_group.attach({"media": file_id, "type": obj.content_type, "caption": given_caption})
+            else:
+                media_group.attach({"media": file_id, "type": obj.content_type})
         except ValueError:
             return await message.answer("Тип альбома не поддерживается")
 
@@ -97,3 +100,9 @@ async def text_message(message: Message):
             config.admin_chat_id,
             message.html_text + get_user_info_string(message), parse_mode="HTML"
         )
+
+
+@dp.message_handler(is_admin=False, content_types=['sticker'])
+async def sticker_message(message: Message):
+    # пользователю нельзя отправлять стикеры
+    await message.answer("Вам запрещено отправлять стикеры!")
