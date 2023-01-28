@@ -9,7 +9,7 @@ if not config.bot_token.get_secret_value():
     print("No token provided")
     exit("No token provided")
 
-print('starting')
+print(config.bot_token.get_secret_value())
 
 # init
 bot = Bot(token=config.bot_token.get_secret_value(), parse_mode="HTML")
