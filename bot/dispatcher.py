@@ -6,7 +6,10 @@ from bot.middleware.AlbumMiddleware import AlbumMiddleware
 
 # prerequisites
 if not config.bot_token.get_secret_value():
+    print("No token provided")
     exit("No token provided")
+
+print('starting')
 
 # init
 bot = Bot(token=config.bot_token.get_secret_value(), parse_mode="HTML")
