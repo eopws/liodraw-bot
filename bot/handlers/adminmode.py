@@ -5,7 +5,7 @@ from bot.utils.strings import extract_id
 from typing import List
 
 
-@dp.message_handler(is_admin=True, commands="start", commands_prefix="/")
+@dp.message_handler(is_admin=True, commands=["start", "help"], commands_prefix="/")
 async def cmd_help(message: Message):
     """
     Справка для админа
