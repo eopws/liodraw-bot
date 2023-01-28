@@ -38,8 +38,8 @@ async def cmd_unban(message: Message):
     except ValueError as ex:
         return await message.reply(str(ex))
     user_id = int(user_id)
-    with suppress(KeyError):
-        unban_user(user_id)
+    # with suppress(KeyError):
+    unban_user(user_id)
 
     try:
         user_name = extract_name(message.reply_to_message)
