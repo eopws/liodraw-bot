@@ -22,9 +22,9 @@ async def cmd_ban(message: Message):
 
     try:
         user_name = extract_name(message.reply_to_message)
-        await message.reply(f"{user_name} забанен")
+        await message.reply(f"{user_name} заблокирован")
     except:
-        await message.reply(f"{user_id} забанен")
+        await message.reply(f"{user_id} заблокирован")
 
 
 @dp.message_handler(is_admin=True, commands="unban", commands_prefix="/")
@@ -38,8 +38,8 @@ async def cmd_unban(message: Message):
     except ValueError as ex:
         return await message.reply(str(ex))
     user_id = int(user_id)
-    # with suppress(KeyError):
-    unban_user(user_id)
+    with suppress(KeyError):
+        unban_user(user_id)
 
     try:
         user_name = extract_name(message.reply_to_message)

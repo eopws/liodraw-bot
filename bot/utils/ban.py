@@ -8,9 +8,13 @@ def remove_from_banned_list(id: str):
     banned_array = parse_banned_list()
 
     banned_array.remove(id)
+    banned_string = ""
+
+    for banned_id in banned_array:
+        banned_string += str(banned_id) + "\n"
 
     with open(f'{ROOT_PATH}/bot/banned.txt', 'w') as f:
-        f.write(banned_array.join('\n') + '\n')
+        f.write(banned_string)
 
 def parse_banned_list():
     with open(f'{ROOT_PATH}/bot/banned.txt', 'r') as f:
