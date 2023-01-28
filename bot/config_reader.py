@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     custom_bot_api: Optional[str]
 
     class Config:
-        env_file = '.dev.env'
+        env_file = '.env'
         env_file_encoding = 'utf-8'
         env_nested_delimiter = '__'
 

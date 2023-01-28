@@ -1,4 +1,5 @@
 from aiogram.types import Message
+from bot.dispatcher import bot
 
 
 def get_user_info_string(message: Message):
@@ -18,6 +19,7 @@ def extract_id(message: Message) -> int:
     # Получение списка сущностей (entities) из текста или подписи к медиафайлу в отвечаемом сообщении
     entities = message.entities or message.caption_entities
     # Если всё сделано верно, то последняя (или единственная) сущность должна быть хэштегом...
+
     if not entities or entities[-1].type != "hashtag":
         raise ValueError("Не удалось извлечь ID для ответа!")
 
